@@ -15,7 +15,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
         {
         }
 
-        public override void Start(string inputFileName, string outputFileName, string keyStr, ModeEncryption mode)
+        public override void Start(string inputFileName, string outputFileName, ModeEncryption mode, params object[] list)
         {
             throw new NotImplementedException();
         }

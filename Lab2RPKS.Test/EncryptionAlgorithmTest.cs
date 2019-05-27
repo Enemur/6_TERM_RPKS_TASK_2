@@ -42,11 +42,11 @@ namespace Lab2RPKS.Test
             Assert.IsTrue(Test(new AlGamal(ref k, null, null)));
         }
 
-        private bool Test(EncryptionAlgorithm _encryptionAlgorithm)
+        private bool Test(EncryptionAlgorithm _encryptionAlgorithm,params object[] list)
         {
             bool result = true;
-            _encryptionAlgorithm.Start(inFile, out1File, "keykeykey", ModeEncryption.Encrypt);
-            _encryptionAlgorithm.Start(out1File, out2File, "keykeykey", ModeEncryption.Decipher);
+            _encryptionAlgorithm.Start(inFile, out1File, ModeEncryption.Encrypt, list);
+            _encryptionAlgorithm.Start(out1File, out2File, ModeEncryption.Decipher, list);
             try
             {
                 using (FileStream fsread1 = new FileStream(inFile, FileMode.Open, FileAccess.Read))

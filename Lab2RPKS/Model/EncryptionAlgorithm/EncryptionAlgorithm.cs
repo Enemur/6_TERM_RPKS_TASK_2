@@ -36,7 +36,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
             return keByte;
         }
 
-        public abstract void Start(string inputFileName, string outputFileName, string keyStr, ModeEncryption mode);
+        public abstract void Start(string inputFileName, string outputFileName, ModeEncryption mode,params object[] list);
 
 
 

@@ -19,7 +19,7 @@ namespace Lab2RPKS.ApplicationViewModel
 
         enum SelectedAction//сюда добавлять новые шифровки 
         {
-            IsNotChosen = 0,
+            IsNotChosen = -1,
             IsRSA,
             IsRijndael,
             IsAlGamal,
@@ -27,7 +27,7 @@ namespace Lab2RPKS.ApplicationViewModel
 
 
         }
-        Dictionary<SelectedAction, EncryptionAlgorithm> _encryptionAlgorithm;
+        EncryptionAlgorithm[] _encryptionAlgorithm;
         private BackgroundWorker worker = new BackgroundWorker();
 
         private SelectedAction _selectedAction;
@@ -43,19 +43,19 @@ namespace Lab2RPKS.ApplicationViewModel
             CurrentProgress = -1;
             IsRunning = true;
             _selectedAction = SelectedAction.IsNotChosen;
-            
-            _encryptionAlgorithm=new Dictionary<SelectedAction, EncryptionAlgorithm>();
+
+            _encryptionAlgorithm=new EncryptionAlgorithm[4];
             BindEncryptionMethods();
-          
+
 
         }
 
         private void BindEncryptionMethods()
         {
-            _encryptionAlgorithm.Add(SelectedAction.IsRSA, new RSA(ref _currentProgress, worker, OnPropertyChanged));
-             _encryptionAlgorithm.Add(SelectedAction.IsRijndael,new Rijndael(ref _currentProgress, worker, OnPropertyChanged));
-             _encryptionAlgorithm.Add(SelectedAction.IsAlGamal,new AlGamal(ref _currentProgress, worker, OnPropertyChanged));
-             _encryptionAlgorithm.Add(SelectedAction.isRabin,new Rabin(ref _currentProgress, worker, OnPropertyChanged));
+            _encryptionAlgorithm[(int)SelectedAction.IsRSA]= new RSA(ref _currentProgress, worker, OnPropertyChanged);
+             _encryptionAlgorithm[(int)SelectedAction.IsRijndael]=new Rijndael(ref _currentProgress, worker, OnPropertyChanged);
+             _encryptionAlgorithm[(int)SelectedAction.IsAlGamal]=new AlGamal(ref _currentProgress, worker, OnPropertyChanged);
+             _encryptionAlgorithm[(int)SelectedAction.isRabin]=new Rabin(ref _currentProgress, worker, OnPropertyChanged);
         }
         private ICommand _radioCommand;
         public ICommand RadioCommand
@@ -139,16 +139,31 @@ namespace Lab2RPKS.ApplicationViewModel
             OnPropertyChanged($"CurrentProgress");
            
  
-            string key = InputBox.ShowInputBox("Введите ключ");
+            /*string key = InputBox.ShowInputBox("Введите ключ");
             if (string.IsNullOrEmpty(key))
             {
                 MessageBox.Show("Ключ не задан");
                 return;
-            }
+            }*/
 
             try
             {
-                _encryptionAlgorithm[_selectedAction].Start(_inputFileName, _outputFileName, key, _modeEncryption);
+                switch (_selectedAction)
+                {
+                    case SelectedAction.IsRSA:
+                        _encryptionAlgorithm[(int)SelectedAction.IsRSA].Start(_inputFileName, _outputFileName, _modeEncryption,2);
+                        break;
+                    case SelectedAction.IsAlGamal:
+                        _encryptionAlgorithm[(int)SelectedAction.IsAlGamal].Start(_inputFileName, _outputFileName, _modeEncryption);
+                        break;
+                    case SelectedAction.isRabin:
+                        _encryptionAlgorithm[(int)SelectedAction.isRabin].Start(_inputFileName, _outputFileName, _modeEncryption);
+                        break;
+                    case SelectedAction.IsRijndael:
+                        _encryptionAlgorithm[(int)SelectedAction.IsRijndael].Start(_inputFileName, _outputFileName, _modeEncryption);
+                        break;
+                }
+              
        
             }
             catch (Exception exception)

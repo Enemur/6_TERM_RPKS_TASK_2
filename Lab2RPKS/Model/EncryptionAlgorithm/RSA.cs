@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Lab2RPKS.Model.EncryptionAlgorithm
 {
@@ -16,9 +17,9 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
         {
         }
 
-        public override void Start(string inputFileName, string outputFileName, string keyStr, ModeEncryption mode)
+        public override void Start(string inputFileName, string outputFileName, ModeEncryption mode, params object[] list)
         {
-            throw new NotImplementedException();
+            MessageBox.Show($"{(int)list[0]}");
         }
     }
 }
