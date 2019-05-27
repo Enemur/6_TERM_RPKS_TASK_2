@@ -1,0 +1,44 @@
+﻿Пример реализации старт
+
+public override void Start(string inputFileName, string outputFileName, string keyStr, ModeEncryption mode)
+        {
+            base._currentProgress = 0;
+
+            using (BinaryReader fsread = new BinaryReader(File.Open(inputFileName, FileMode.Open)))
+            {
+                using (FileStream fswrite = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
+                {
+
+
+                    long length = new System.IO.FileInfo(inputFileName).Length;
+                    double oneTick = 100 / (double) length; //сколько добавлять процентов
+                    double progres = 0;
+                    byte[] key = StringToByte(keyStr);
+                    if (length == 0) throw new Exception("Пустой файл");
+
+                    for (int i = 0; i < length; i++)
+                    {
+
+
+                        progres += oneTick;
+                        if (_worker != null && base._currentProgress != (int) progres)
+                        {
+                            base._currentProgress = (int) progres;
+                            base._worker.ReportProgress(base._currentProgress);
+
+                            Thread.Sleep(1);
+                            base._onPropertyChanged("CurrentProgress");
+                        }
+
+
+                    }
+                    //readArr = fsread.ReadBytes((int) length);
+
+                    //fswrite.Write(result, 0, result.Length);
+
+
+
+                }
+            }
+
+        }

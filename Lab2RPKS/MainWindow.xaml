@@ -1,0 +1,71 @@
+﻿<Window x:Class="Lab2RPKS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab2RPKS"
+        mc:Ignorable="d"
+        Title="Rpks #2" Height="620" Width="900">
+   
+    <Grid>
+        <Menu Height="20" VerticalAlignment="Top" Background="Gainsboro">
+
+            <MenuItem Header="About">
+                <MenuItem Header="Task" Command="{Binding AboutProgramCommand}"></MenuItem>
+                <MenuItem Header="Author" Command="{Binding AboutAuthorCommand}"></MenuItem>
+            </MenuItem>
+
+
+        </Menu>
+        <TabControl Grid.Row="0" Grid.Column="0" Margin="0,20,0,0" >
+           
+            <TabItem Header="Шифрование">
+                <Grid Background="#FFE5E5E5">
+
+                    <TextBox  Text="{Binding Path=InputFileName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Margin="11,64,209,437" Height="40"/>
+                    <TextBox  Text="{Binding Path=OutputFileName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Margin="10,113,210,388" Height="40"/>
+                    <Button Content="Выбрать входной файл" FontSize="16"
+                            Command="{Binding InputFileCommand}" Margin="682,64,10,437" />
+                    <Button Content="Выбрать выходной файл" FontSize="16"
+                            Command="{Binding OutputFileCommand}" Margin="681,113,11,388"/>
+
+                    <StackPanel Margin="370,198,170,237"  >
+                        <RadioButton GroupName="Encryption" Content="RSA" FontSize="16" CommandParameter="RSA" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
+                        <RadioButton GroupName="Encryption" Content="Rijndael" FontSize="16" CommandParameter="Rijndael" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
+                        <RadioButton GroupName="Encryption" Content="Эль-Гамал" FontSize="16" CommandParameter="AlGamal" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
+                        <RadioButton GroupName="Encryption" Content="Рабин" FontSize="16" CommandParameter="Rabin" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
+                      
+                      
+                        
+
+                    </StackPanel>
+                    <Button Content="Шифровать" FontSize="16"
+                            Command="{Binding CryptCommand}" IsEnabled="{Binding IsRunning}"  Margin="170,210,522,300" />
+                    <Button Content="Дешифровать" FontSize="16"
+                            Command="{Binding DecryptCommand}" IsEnabled="{Binding IsRunning}" Margin="170,260,522,250" />
+
+                    <ProgressBar 
+                         Value="{Binding CurrentProgress, Mode=OneWay}"
+                         Visibility="Visible"
+                         VerticalAlignment="Center"
+                         Grid.Row="0"
+                         Height="40"
+                         Minimum="0" Maximum="100"
+                         Name="pbStatus" Margin="10,320,10,176" Background="AliceBlue"/>
+
+                    <Label Content="{Binding Path=StatusStr,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" FontSize="18"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,319,0,0"  Width="864" Height="33" 
+                           HorizontalContentAlignment="Center"/>
+
+
+
+
+
+
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+
+
+    </Grid>
+</Window>
