@@ -17,7 +17,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
         {
         }
 
-        public override void Start(string inputFileName, string outputFileName, ModeEncryption mode, params object[] list)
+        public  void Start(string inputFileName, string outputFileName, ModeEncryption mode, params object[] list)
         {
             MessageBox.Show($"{(int)list[0]}");
         }
