@@ -27,7 +27,10 @@ namespace Lab2RPKS.ApplicationViewModel
 
 
         }
-        Dictionary<SelectedAction, EncryptionAlgorithm> _encryptionAlgorithm;
+        private RSA _rsaEncryption;
+        private Rijndael _rijndaelEncryption;
+        private AlGamal _alGamalEncryption;
+        private Rabin _rabinEncryption;
         private BackgroundWorker worker = new BackgroundWorker();
 
         private SelectedAction _selectedAction;
@@ -43,20 +46,16 @@ namespace Lab2RPKS.ApplicationViewModel
             CurrentProgress = -1;
             IsRunning = true;
             _selectedAction = SelectedAction.IsNotChosen;
-            
-            _encryptionAlgorithm=new Dictionary<SelectedAction, EncryptionAlgorithm>();
-            BindEncryptionMethods();
-          
+            _rsaEncryption = new RSA(ref _currentProgress, worker, OnPropertyChanged);
+            _rijndaelEncryption = new Rijndael(ref _currentProgress, worker, OnPropertyChanged);
+            _alGamalEncryption = new AlGamal(ref _currentProgress, worker, OnPropertyChanged);
+            _rabinEncryption = new Rabin(ref _currentProgress, worker, OnPropertyChanged);
+
+
 
         }
 
-        private void BindEncryptionMethods()
-        {
-            _encryptionAlgorithm.Add(SelectedAction.IsRSA, new RSA(ref _currentProgress, worker, OnPropertyChanged));
-             _encryptionAlgorithm.Add(SelectedAction.IsRijndael,new Rijndael(ref _currentProgress, worker, OnPropertyChanged));
-             _encryptionAlgorithm.Add(SelectedAction.IsAlGamal,new AlGamal(ref _currentProgress, worker, OnPropertyChanged));
-             _encryptionAlgorithm.Add(SelectedAction.isRabin,new Rabin(ref _currentProgress, worker, OnPropertyChanged));
-        }
+      
         private ICommand _radioCommand;
         public ICommand RadioCommand
         {
@@ -137,19 +136,54 @@ namespace Lab2RPKS.ApplicationViewModel
 
             CurrentProgress = 0;
             OnPropertyChanged($"CurrentProgress");
-           
- 
-            string key = InputBox.ShowInputBox("Введите ключ");
-            if (string.IsNullOrEmpty(key))
-            {
-                MessageBox.Show("Ключ не задан");
-                return;
-            }
+            Thread.Sleep(1);
+
+
 
             try
             {
-                _encryptionAlgorithm[_selectedAction].Start(_inputFileName, _outputFileName, key, _modeEncryption);
-       
+                switch (_selectedAction)
+                {
+                    case SelectedAction.IsRSA:
+                        string key = InputBox.ShowInputBox("Введите 2 простых числа для шифровки через пробел");
+                        if (string.IsNullOrEmpty(key))
+                        {
+                            MessageBox.Show("числа не заданы");
+                            return;
+                        }
+
+                        var numbers = key.Split(' ');
+                        if (_modeEncryption == ModeEncryption.Encrypt)
+                        {
+                            string answer = _rsaEncryption.Encode(_inputFileName, _outputFileName, Convert.ToInt64(numbers[0]), Convert.ToInt64(numbers[1]));
+                            if (!string.IsNullOrEmpty(answer))
+                            {
+                                MessageBox.Show($"Числа для расшифровки: {answer}");
+
+                            }
+                        }
+                        else
+                        {
+                            _rsaEncryption.Decipher(_inputFileName, _outputFileName, Convert.ToInt64(numbers[0]), Convert.ToInt64(numbers[1]));
+                        }
+
+
+                        break;
+                        /*    case SelectedAction.IsAlGamal:
+                                _encryptionAlgorithm[(int) SelectedAction.IsAlGamal]
+                                    .Start(_inputFileName, _outputFileName, _modeEncryption);
+                                break;
+                            case SelectedAction.isRabin:
+                                _encryptionAlgorithm[(int) SelectedAction.isRabin]
+                                    .Start(_inputFileName, _outputFileName, _modeEncryption);
+                                break;
+                            case SelectedAction.IsRijndael:
+                                _encryptionAlgorithm[(int) SelectedAction.IsRijndael]
+                                    .Start(_inputFileName, _outputFileName, _modeEncryption);
+                                break;*/
+                }
+
+
             }
             catch (Exception exception)
             {
