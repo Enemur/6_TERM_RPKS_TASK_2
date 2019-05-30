@@ -35,12 +35,5 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
             return keByte;
         }
-
-       
-
-
-
-      
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Lab2RPKS.Model.EncryptionAlgorithm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,10 +24,12 @@ namespace Lab2RPKS.Test
 
             bool result = true;
             RSA _encryptionAlgorithm = new RSA(ref k, null, null);
+
             string answer = _encryptionAlgorithm.Encode(inFile, out1File,  47, 97);
             var ans = answer.Split(' ');
 
             _encryptionAlgorithm.Decipher(out1File, out2File,  (long)Convert.ToInt64(ans[0]), (long)Convert.ToInt64(ans[1]));
+
             try
             {
                 using (FileStream fsread1 = new FileStream(inFile, FileMode.Open, FileAccess.Read))
@@ -121,6 +123,4 @@ namespace Lab2RPKS.Test
             return result;
         }
     }
-
-
 }

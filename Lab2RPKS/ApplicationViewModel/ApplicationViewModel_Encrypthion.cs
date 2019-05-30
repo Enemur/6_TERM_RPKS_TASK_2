@@ -1,5 +1,3 @@
-﻿
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +17,7 @@ namespace Lab2RPKS.ApplicationViewModel
 
         enum SelectedAction//сюда добавлять новые шифровки 
         {
-            IsNotChosen = 0,
+            IsNotChosen = -1,
             IsRSA,
             IsRijndael,
             IsAlGamal,
@@ -35,7 +33,7 @@ namespace Lab2RPKS.ApplicationViewModel
 
         private SelectedAction _selectedAction;
 
-       
+
 
         public ApplicationViewModel_Encrypthion()
         {
@@ -54,8 +52,7 @@ namespace Lab2RPKS.ApplicationViewModel
 
 
         }
-
-      
+        
         private ICommand _radioCommand;
         public ICommand RadioCommand
         {

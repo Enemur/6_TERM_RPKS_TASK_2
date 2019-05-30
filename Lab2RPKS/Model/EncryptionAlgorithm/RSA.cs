@@ -149,7 +149,6 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
             return true;
         }
 
-
         private long Calculate_d(long m)
         {
             long d = m - 1;
@@ -187,4 +186,3 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
     }
 }
-
