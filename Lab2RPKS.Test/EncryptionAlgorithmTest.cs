@@ -24,10 +24,10 @@ namespace Lab2RPKS.Test
 
             bool result = true;
             RSA _encryptionAlgorithm = new RSA(ref k, null, null);
-            string answer = _encryptionAlgorithm.Start(inFile, out1File, ModeEncryption.Encrypt, 47, 97);
+            string answer = _encryptionAlgorithm.Encode(inFile, out1File,  47, 97);
             var ans = answer.Split(' ');
 
-            _encryptionAlgorithm.Start(out1File, out2File, ModeEncryption.Decipher, (long)Convert.ToInt64(ans[0]), (long)Convert.ToInt64(ans[1]));
+            _encryptionAlgorithm.Decipher(out1File, out2File,  (long)Convert.ToInt64(ans[0]), (long)Convert.ToInt64(ans[1]));
             try
             {
                 using (FileStream fsread1 = new FileStream(inFile, FileMode.Open, FileAccess.Read))
