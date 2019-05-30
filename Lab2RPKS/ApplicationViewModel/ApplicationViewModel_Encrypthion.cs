@@ -1,5 +1,3 @@
-﻿
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,8 +52,7 @@ namespace Lab2RPKS.ApplicationViewModel
 
 
         }
-
-
+        
         private ICommand _radioCommand;
         public ICommand RadioCommand
         {

@@ -14,7 +14,5 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
             ref currentProgress, worker, onPropertyChanged)
         {
         }
-
-     
     }
 }
