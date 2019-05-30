@@ -68,6 +68,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ApplicationViewModel\ApplicationViewModel_Encrypthion.cs" />
+    <Compile Include="ApplicationViewModel\ApplicationViewModel_GF%28256%29.cs" />
     <Compile Include="ApplicationViewModel\BaseApplicationViewModel.cs" />
     <Compile Include="ApplicationViewModel\RelayCommand.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -83,6 +84,7 @@
     <Compile Include="Model\EncryptionAlgorithm\Rijndael.cs" />
     <Compile Include="Model\EncryptionAlgorithm\RSA.cs" />
     <Compile Include="Model\EncryptionTasks\Task1.cs" />
+    <Compile Include="Model\GF%28256%29\GF%28256%29.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
