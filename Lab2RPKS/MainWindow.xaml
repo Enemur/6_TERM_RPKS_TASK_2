@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Lab2RPKS"
         mc:Ignorable="d"
         Title="Rpks #2" Height="620" Width="900">
-   
+
     <Grid>
         <Menu Height="20" VerticalAlignment="Top" Background="Gainsboro">
 
@@ -18,7 +18,7 @@
 
         </Menu>
         <TabControl Grid.Row="0" Grid.Column="0" Margin="0,20,0,0" >
-           
+
             <TabItem Header="Шифрование">
                 <Grid Background="#FFE5E5E5">
 
@@ -34,9 +34,9 @@
                         <RadioButton GroupName="Encryption" Content="Rijndael" FontSize="16" CommandParameter="Rijndael" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
                         <RadioButton GroupName="Encryption" Content="Эль-Гамал" FontSize="16" CommandParameter="AlGamal" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
                         <RadioButton GroupName="Encryption" Content="Рабин" FontSize="16" CommandParameter="Rabin" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
-                      
-                      
-                        
+
+
+
 
                     </StackPanel>
                     <Button Content="Шифровать" FontSize="16"
@@ -64,6 +64,35 @@
                 </Grid>
 
             </TabItem>
+            <TabItem Header="GF(256)">
+                <Grid Background="#FFE5E5E5">
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialValue1, UpdateSourceTrigger=PropertyChanged}"  FontSize="15" Width="250" Margin="28,126,608,371" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialEquation1, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Width="250" Margin="28,211,608,286" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialValue2, UpdateSourceTrigger=PropertyChanged}"  FontSize="15" Width="250" Margin="310,126,326,371" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialEquation2, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Width="250" Margin="310,211,326,286" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialMultiplicationEquation, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Width="250" Margin="592,211,44,286" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialMultiplicationValue, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Width="250" Margin="592,126,44,371" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=MultiplicativeInverse1, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Width="250" Margin="28,295,608,202" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=MultiplicativeInverse2, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" FontSize="15" Width="250" Margin="310,295,326,202" />
+
+                    <Label Content="Полином 1" FontSize="15" HorizontalAlignment="Left" Margin="107,61,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Полином 2"  FontSize="15" HorizontalAlignment="Left" Margin="391,61,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.116,1.133"/>
+
+                    <Label Content="Введите в 2 сс"  FontSize="15" HorizontalAlignment="Left" Margin="97,91,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Введите в 2 сс" FontSize="15"  HorizontalAlignment="Left" Margin="380,91,0,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Полином 1 в нормальном виде" FontSize="15"  HorizontalAlignment="Left" Margin="40,176,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Полином 2 в нормальном виде"  FontSize="15" HorizontalAlignment="Left" Margin="323,176,0,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Результат умножение в виде числа" FontSize="15"  HorizontalAlignment="Left" Margin="592,91,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Результат умножение в виде полинома" FontSize="15" HorizontalAlignment="Left" Margin="571,176,0,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Мультипликативная инферсия 1"  FontSize="15" HorizontalAlignment="Left" Margin="40,260,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Мультипликативная инферсия 2"  FontSize="15" HorizontalAlignment="Left" Margin="318,260,0,0" VerticalAlignment="Top"/>
+
+                </Grid>
+            </TabItem>
+
         </TabControl>
 
 
