@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-// TODO: must test it
-
 namespace Lab2RPKS.Model.EncryptionTasks
 {
-    public static class Task1
+    public static class CryptoAlgorithmsTask1
     {
         #region Additional types
         
@@ -17,26 +15,38 @@ namespace Lab2RPKS.Model.EncryptionTasks
             public BigInteger GCD { get; set; }
         }
 
+        public struct Monom
+        {
+            public BigInteger Coefficient { get; set; }
+            public BigInteger Degree { get; set; }
+        }
+
         #endregion
 
         #region Aliases
 
         // 1. Напишите программу, выводящую все простые числа, которые меньше m
-        public static List<BigInteger> task1(BigInteger m)
+        public static List<BigInteger> Task1(BigInteger m)
         {
             return getSimpleNumberLessThan(m);
         }
 
         // 2. Выведите на экран приведенную систему вычетов по модулю m
-        public static List<BigInteger> task2(BigInteger m)
+        public static List<BigInteger> Task2(BigInteger m)
         {
             return getReducedSystemOfResiduesByModule(m);
         }
 
         // 3. Напишите функцию, вычисляющую значение f(m), где f(m) − функция Эйлера.
-        public static BigInteger task3(BigInteger m)
+        public static BigInteger Task3(BigInteger m)
         {
             return getEuler(m);
+        }
+
+        // 4. Напишите программу, представляющую число M в каноническом разложении по степеням простых чисел
+        public static List<Monom> Task4(BigInteger m)
+        {
+            return GetCanonicalExpansionInPowersOfPrimes(m);
         }
 
         #endregion
@@ -121,7 +131,7 @@ namespace Lab2RPKS.Model.EncryptionTasks
         // Проверяет, простое число или нет
         public static bool IsSimple(BigInteger n)
         {
-            if (n == 1)
+            if (n >= 1 && n <= 3)
             {
                 return true;
             }
@@ -212,6 +222,76 @@ namespace Lab2RPKS.Model.EncryptionTasks
                 {
                     result += 1;
                 }
+            }
+
+            return result;
+        }
+        
+        // получает следующее простое число, больше переданного
+        public static BigInteger GetNextPrimeNumber(BigInteger m)
+        {
+            do
+            {
+                m++;
+            } while (!IsSimple(m));
+
+            return m;
+        }
+
+        // TODO: потестить
+        // получает каноническое разложение числа по степеням простых чисел
+        public static List<Monom> GetCanonicalExpansionInPowersOfPrimes(BigInteger m)
+        {
+            if (m <= 0)
+            {
+                throw new ArgumentException("m = 0");
+            }
+
+            var coefficientToDegree = new Dictionary<BigInteger, BigInteger>();
+
+            var currentPrime = new BigInteger(2);
+
+            while (!IsSimple(m))
+            {
+                var divideResult = m / currentPrime;
+
+                if (divideResult * currentPrime != m)
+                {
+                    currentPrime = GetNextPrimeNumber(currentPrime);
+                }
+                else
+                {
+                    if (coefficientToDegree.ContainsKey(currentPrime))
+                    {
+                        coefficientToDegree[currentPrime]++;
+                    }
+                    else
+                    {
+                        coefficientToDegree.Add(currentPrime, 1);
+                    }
+                    
+                    m = divideResult;
+                }
+            }
+
+            if (coefficientToDegree.ContainsKey(m))
+            {
+                coefficientToDegree[m]++;
+            }
+            else
+            {
+                coefficientToDegree.Add(m, 1);
+            }
+
+            var result = new List<Monom>();
+
+            foreach (var keyValuePair in coefficientToDegree)
+            {
+                result.Add(new Monom
+                {
+                    Coefficient = keyValuePair.Key,
+                    Degree = keyValuePair.Value,
+                });
             }
 
             return result;
