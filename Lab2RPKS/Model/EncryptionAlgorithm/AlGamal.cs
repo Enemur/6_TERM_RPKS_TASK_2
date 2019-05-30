@@ -14,9 +14,6 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
         {
         }
 
-        public  void Start(string inputFileName, string outputFileName, ModeEncryption mode, params object[] list)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
