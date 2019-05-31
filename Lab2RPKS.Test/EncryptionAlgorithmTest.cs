@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Lab2RPKS.Model;
 using Lab2RPKS.Model.EncryptionAlgorithm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -123,6 +124,32 @@ namespace Lab2RPKS.Test
             Assert.IsTrue(false);
         }
 
-       
+        [TestMethod]
+        public void GFTestMult()
+        {
+            Gf gf1=new Gf(3);
+            Gf gf2=new Gf(3);
+            gf1.Polynom = "7";
+            gf2.Polynom = "3";
+
+            string TrueResult = "2";
+            string result = (gf1*gf2).Polynom;
+            Assert.AreEqual(TrueResult,result);
+           
+        }
+
+        [TestMethod]
+        public void GFTestDiv()
+        {
+            Gf gf1 = new Gf(3);
+            Gf gf2 = new Gf(3);
+            gf1.Polynom = "2";
+            gf2.Polynom = "7";
+
+            string TrueResult = "3";
+            string result = (gf1 / gf2).Polynom;
+            Assert.AreEqual(TrueResult, result);
+
+        }
     }
 }

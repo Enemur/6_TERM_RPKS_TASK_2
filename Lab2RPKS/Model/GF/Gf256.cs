@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab2RPKS.Model
+namespace Lab2RPKS.Model.GF
 {
     public class Gf256
     {
