@@ -7,7 +7,7 @@ namespace Lab2RPKS.Model.EncryptionTasks
     public static class CryptoAlgorithmsTask1
     {
         #region Additional types
-        
+
         public struct BezoutResult
         {
             public BigInteger X { get; set; }
@@ -78,7 +78,7 @@ namespace Lab2RPKS.Model.EncryptionTasks
 
                 var tmpX = xx;
                 var tmpXx = x - xx * q;
-                
+
                 x = tmpX;
                 xx = tmpXx;
 
@@ -104,30 +104,6 @@ namespace Lab2RPKS.Model.EncryptionTasks
             return bezout.GCD;
         }
 
-        // Быстрое возведение в степень по модулю
-        public static BigInteger PowModule(BigInteger x, BigInteger n, BigInteger module)
-        {
-            var result = new BigInteger(1);
-
-            while (n > 0)
-            {
-                if (n % 2 != 0)
-                {
-                    result *= n;
-                    result %= module;
-                    n -= 1;
-                }
-                else
-                {
-                    x *= x;
-                    x %= module;
-                    n /= 2;
-                }
-            }
-
-            return result;
-        }
-        
         // Проверяет, простое число или нет
         public static bool IsSimple(BigInteger n)
         {
@@ -226,7 +202,7 @@ namespace Lab2RPKS.Model.EncryptionTasks
 
             return result;
         }
-        
+
         // получает следующее простое число, больше переданного
         public static BigInteger GetNextPrimeNumber(BigInteger m)
         {
@@ -238,7 +214,6 @@ namespace Lab2RPKS.Model.EncryptionTasks
             return m;
         }
 
-        // TODO: потестить
         // получает каноническое разложение числа по степеням простых чисел
         public static List<Monom> GetCanonicalExpansionInPowersOfPrimes(BigInteger m)
         {
@@ -269,7 +244,7 @@ namespace Lab2RPKS.Model.EncryptionTasks
                     {
                         coefficientToDegree.Add(currentPrime, 1);
                     }
-                    
+
                     m = divideResult;
                 }
             }
