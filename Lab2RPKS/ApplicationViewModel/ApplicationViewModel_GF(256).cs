@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Essy.Tools.InputBox;
 using Lab2RPKS.Model;
+using Lab2RPKS.Model.GF;
 
 namespace Lab2RPKS.ApplicationViewModel
 {
