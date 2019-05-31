@@ -84,6 +84,7 @@
     <Compile Include="Model\EncryptionAlgorithm\Rijndael.cs" />
     <Compile Include="Model\EncryptionAlgorithm\RSA.cs" />
     <Compile Include="Model\EncryptionTasks\Task1.cs" />
+    <Compile Include="Model\EncryptionTasks\Task3.cs" />
     <Compile Include="Model\GF%28256%29\GF%28256%29.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
