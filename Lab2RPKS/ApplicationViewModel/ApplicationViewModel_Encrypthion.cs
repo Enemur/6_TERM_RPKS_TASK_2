@@ -168,12 +168,9 @@ namespace Lab2RPKS.ApplicationViewModel
                         {
                             string key = InputBox.ShowInputBox("Введите p, q, g, x через пробел");
                             if (string.IsNullOrEmpty(key))
-                            {
-                                MessageBox.Show("Числа не заданы");
-                                return;
-                            }
+                                throw new Exception("Numbers not given");
 
-                            var numbers = key.Split(' ');
+                                var numbers = key.Split(' ');
 
                             if (numbers.Length != 4)
                                 throw new Exception("Incorrect input");
@@ -193,10 +190,7 @@ namespace Lab2RPKS.ApplicationViewModel
                         {
                             string key = InputBox.ShowInputBox("Введите p, q, b через пробел");
                             if (string.IsNullOrEmpty(key))
-                            {
-                                MessageBox.Show("Числа не заданы");
-                                return;
-                            }
+                                throw new Exception("Numbers not given");
 
 
                             var numbers = key.Split(' ');

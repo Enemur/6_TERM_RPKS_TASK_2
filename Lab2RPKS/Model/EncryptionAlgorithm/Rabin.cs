@@ -81,7 +81,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
         }
         #endregion
 
-        public BigInteger EncryptByte(byte data, BigInteger n, BigInteger b)
+        public BigInteger EncryptByte(BigInteger data, BigInteger n, BigInteger b)
         {
             BigInteger result;
 
@@ -117,7 +117,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
                                 _onPropertyChanged("CurrentProgress");
                             }
 
-                        var readedByte = (byte)fileReader.ReadByte();
+                        var readedByte = fileReader.ReadByte();
 
                         var c = EncryptByte(readedByte, n, b);
                         resultBytes.AddRange(c.ToByteArray());
@@ -128,9 +128,8 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
             }
         }
 
-        public IEnumerable<int> DecryptByte(byte data, BigInteger p, BigInteger q, BigInteger n, BigInteger b)
+        public IEnumerable<BigInteger> DecryptByte(BigInteger data, BigInteger p, BigInteger q, BigInteger n, BigInteger b)
         {
-            //var D = Operations.additionByModule(CryptoAlgorithmsTask1.PowModule(b, 2, n) / 4, Operations.multipclicationByModule(4, data, n), n);
             var D = Operations.Mod((BigInteger.Pow(b, 2) + 4 * data), n);
 
             // 4 корня +/-
@@ -147,13 +146,13 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
             d.Add(n - d[2]);
 
 
-            var m = new List<int>();
+            var m = new List<BigInteger>();
             foreach (var di in d)
             {
                 if (Operations.Mod((di - b), 2) == 0)
-                    m.Add((int)Operations.Mod(((-b + di) / 2), n));
+                    m.Add(Operations.Mod(((-b + di) / 2), n));
                 else
-                    m.Add((int)(Operations.Mod(((-b + di + n) / 2), n)));
+                    m.Add((Operations.Mod(((-b + di + n) / 2), n)));
             }
 
             return m;
@@ -167,13 +166,11 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
             using (var fileReader = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read))
             {
-                using (var fileWriter = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
+                using (var fileWriter = new StreamWriter(outputFilePath))
                 {
                     var oneTick = fileReader.Length;
                     if (oneTick > 100)
                         oneTick /= 100;
-
-                    var resultBytes = new List<byte>();
 
                     for (var i = 0; i < fileReader.Length; i++)
                     {
@@ -186,21 +183,17 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
                                 _onPropertyChanged("CurrentProgress");
                             }
 
-                        var readedByte = (byte)fileReader.ReadByte();
+                        var readedByte = fileReader.ReadByte();
 
                         var m = DecryptByte(readedByte, p, q, n, b);
 
                         foreach (var mi in m)
                         {
-                            if (mi <= 255)
-                            {
-                                resultBytes.Add((byte)mi);
-                            }
+                            fileWriter.Write(mi + " ");
                         }
+                        fileWriter.WriteLine();
 
                     }
-
-                    fileWriter.Write(resultBytes.ToArray(), 0, resultBytes.Count);
                 }
             }
         }
