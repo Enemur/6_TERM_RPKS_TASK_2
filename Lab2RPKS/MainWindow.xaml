@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Lab2RPKS"
         mc:Ignorable="d"
         Title="Rpks #2" Height="620" Width="900">
-   
+
     <Grid>
         <Menu Height="20" VerticalAlignment="Top" Background="Gainsboro">
 
@@ -18,7 +18,38 @@
 
         </Menu>
         <TabControl Grid.Row="0" Grid.Column="0" Margin="0,20,0,0" >
-           
+            <TabItem Header="Задача 1">
+                <Grid Background="#FFE5E5E5">
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=M,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  FontSize="15" Width="250" Margin="315,52,321,445" />
+
+
+                    <Label Content="Введите число m" FontSize="15" HorizontalAlignment="Left" Margin="376,17,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Приведенная система&#xa;вычетов по модулю m" Width="180" FontSize="15" HorizontalAlignment="Left" Margin="246,103,0,0" VerticalAlignment="Top" Height="76"/>
+                    <Label Content="Функция Эйлера от m" Width="180" FontSize="15" HorizontalAlignment="Left" Margin="461,103,0,0" VerticalAlignment="Top" Height="76"/>
+                    <Label Content="Простые числа &#xa;которые меньше m" Width="180" FontSize="15" HorizontalAlignment="Left" Margin="18,103,0,0" VerticalAlignment="Top" Height="76" />
+                    <Label Content="Каноническое разложение &#xa;по степеням простых &#xa;чисел" Width="198" FontSize="15" HorizontalAlignment="Left" Margin="676,103,0,0" VerticalAlignment="Top" Height="76"/>
+                    <ListBox  HorizontalAlignment="Left" Height="327" Margin="18,179,0,0" VerticalAlignment="Top" Width="180" ItemsSource="{Binding PrimeNumbersLessM}"/>
+                    <ListBox HorizontalAlignment="Left" Height="327" Margin="246,179,0,0" VerticalAlignment="Top" Width="180" ItemsSource="{Binding SystemDeduction}"/>
+                    <ListBox HorizontalAlignment="Left" Height="327" Margin="461,179,0,0" VerticalAlignment="Top" Width="180" ItemsSource="{Binding FunctionEiler}"/>
+                    <ListBox HorizontalAlignment="Left" Height="327" Margin="676,179,0,0" VerticalAlignment="Top" Width="180" ItemsSource="{Binding PowerDecomposition}"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Возведение в степень">
+                <Grid Background="#FFE5E5E5">
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=X,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  FontSize="15" Width="250" Margin="34,126,602,371" />
+
+
+                    <Label Content="Введите число" FontSize="15" HorizontalAlignment="Left" Margin="95,91,0,0" VerticalAlignment="Top"/>
+                    <TextBox TextWrapping="Wrap" Text="{Binding N, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="15" Width="250" Margin="322,126,314,371" />
+                    <Label Content="Введите степень" FontSize="15" HorizontalAlignment="Left" Margin="385,91,0,0" VerticalAlignment="Top"/>
+                    <TextBox TextWrapping="Wrap" Text="{Binding Module, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="15" Width="250" Margin="610,126,26,371" />
+                    <Label Content="Введите модуль" FontSize="15" HorizontalAlignment="Left" Margin="674,91,0,0" VerticalAlignment="Top"/>
+                    <TextBox TextWrapping="Wrap" Text="{Binding Answer, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="322,260,314,237" />
+                    <Label Content="Ответ" FontSize="15" HorizontalAlignment="Left" Margin="419,230,0,0" VerticalAlignment="Top"/>
+
+                </Grid>
+            </TabItem>
             <TabItem Header="Шифрование">
                 <Grid Background="#FFE5E5E5">
 
@@ -34,9 +65,9 @@
                         <RadioButton GroupName="Encryption" Content="Rijndael" FontSize="16" CommandParameter="Rijndael" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
                         <RadioButton GroupName="Encryption" Content="Эль-Гамал" FontSize="16" CommandParameter="AlGamal" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
                         <RadioButton GroupName="Encryption" Content="Рабин" FontSize="16" CommandParameter="Rabin" Command="{Binding RadioCommand, UpdateSourceTrigger=PropertyChanged}"  />
-                      
-                      
-                        
+
+
+
 
                     </StackPanel>
                     <Button Content="Шифровать" FontSize="16"
@@ -63,6 +94,63 @@
 
                 </Grid>
 
+            </TabItem>
+            <TabItem Header="GF(256)">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="13*"/>
+                        <ColumnDefinition Width="873*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialValue1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  FontSize="15" Width="250" Margin="15,126,608,371" Grid.Column="1" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialEquation1, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="15,211,608,286" Grid.Column="1" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialValue2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  FontSize="15" Width="250" Margin="297,126,326,371" Grid.Column="1" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialEquation2, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="297,211,326,286" Grid.Column="1" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialMultiplicationEquation, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="579,211,44,286" Grid.Column="1" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=BinaryPolynomialMultiplicationValue, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="579,126,44,371" Grid.Column="1" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=MultiplicativeInverse1, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="15,295,608,202" Grid.Column="1" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=MultiplicativeInverse2, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="297,295,326,202" Grid.Column="1" />
+
+                    <Label Content="Полином 1" FontSize="15" HorizontalAlignment="Left" Margin="94,61,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Полином 2"  FontSize="15" HorizontalAlignment="Left" Margin="378,61,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.116,1.133" Grid.Column="1"/>
+
+                    <Label Content="Введите в 10 сс"  FontSize="15" HorizontalAlignment="Left" Margin="84,91,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Введите в 10 сс" FontSize="15"  HorizontalAlignment="Left" Margin="367,91,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Полином 1 в нормальном виде" FontSize="15"  HorizontalAlignment="Left" Margin="27,176,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Полином 2 в нормальном виде"  FontSize="15" HorizontalAlignment="Left" Margin="310,176,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Результат умножение в виде числа" FontSize="15"  HorizontalAlignment="Left" Margin="579,91,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Результат умножение в виде полинома" FontSize="15" HorizontalAlignment="Left" Margin="558,176,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Мультипликативная инверсия 1"  FontSize="15" HorizontalAlignment="Left" Margin="27,260,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="Мультипликативная инверсия 2"  FontSize="15" HorizontalAlignment="Left" Margin="305,260,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Button Content="Умножение 2 чисел из GF(256)" Command="{Binding Multiplicatian2NumberCommand}" HorizontalAlignment="Left" Margin="579,295,0,0" VerticalAlignment="Top" Width="250" Height="44" Grid.Column="1"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="GF">
+                <Grid Background="#FFE5E5E5">
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Gf1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  FontSize="15" Width="250" Margin="28,126,608,371" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Gf2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  FontSize="15" Width="250" Margin="310,126,326,371" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=GfSize,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" FontSize="15" Width="250" Margin="592,126,44,371" />
+
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=ResultAdd, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="28,211,608,286" />
+
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=ResultMult, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="310,211,326,286" />
+                    <TextBox TextWrapping="Wrap" Text="{Binding Path=ResultDiv, Mode=OneWay}" IsReadOnly="True" FontSize="15" Width="250" Margin="592,211,44,286" />
+
+                    <Label Content="Полином 1" FontSize="15" HorizontalAlignment="Left" Margin="107,61,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Полином 2"  FontSize="15" HorizontalAlignment="Left" Margin="391,61,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.116,1.133"/>
+
+                    <Label Content="Введите в 10 сс"  FontSize="15" HorizontalAlignment="Left" Margin="97,91,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Введите в 10 сс" FontSize="15"  HorizontalAlignment="Left" Margin="380,91,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Введите размерность n, где 2^n" FontSize="15"  HorizontalAlignment="Left" Margin="592,91,0,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Результат сложения" FontSize="15"  HorizontalAlignment="Left" Margin="86,175,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Результат умножения"  FontSize="15" HorizontalAlignment="Left" Margin="360,176,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Результат деления" FontSize="15" HorizontalAlignment="Left" Margin="651,175,0,0" VerticalAlignment="Top"/>
+
+                </Grid>
             </TabItem>
         </TabControl>
 

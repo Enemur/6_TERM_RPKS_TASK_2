@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Numerics;
+using System.Security.Cryptography;
+
 namespace Lab2RPKS.Model.EncryptionAlgorithm
 {
     public class RSA : EncryptionAlgorithm
@@ -18,17 +15,18 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
         }
 
 
-        public string Encode(string inputFileName, string outputFileName, long p, long q)//возвращает секретные ключ в виде 2 чисел
+        public string Encode(string inputFileName, string outputFileName, BigInteger p, BigInteger q)//возвращает секретные ключ в виде 2 чисел
         {
+            _currentProgress = 0;
             if (!IsTheNumberSimple(p) || !IsTheNumberSimple(q))
             {
                 throw new Exception("p или q - не простые числа!");
             }
 
-            long n = p * q;
-            long m = (p - 1) * (q - 1);
-            long d = Calculate_d(m);
-            long e_ = Calculate_e(d, m);
+            BigInteger n = p * q;
+            BigInteger m = (p - 1) * (q - 1);
+            BigInteger d = Calculate_d(m);
+            BigInteger e_ = Calculate_e(d, m);
             using (FileStream fsread = new FileStream(inputFileName, FileMode.Open, FileAccess.Read))
             {
                 using (StreamWriter fswrite = new StreamWriter(outputFileName))
@@ -55,7 +53,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
                         int readByte = fsread.ReadByte();
 
-                        uint result = RSAByteEncryption((uint)readByte, d, n);
+                        BigInteger result = RSAByteEncryption((uint)readByte, d, n);
 
                         fswrite.WriteLine(result);
                     }
@@ -66,10 +64,10 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         }
 
-        public void Decipher(string inputFileName, string outputFileName, long d, long n)
+        public void Decipher(string inputFileName, string outputFileName, BigInteger d, BigInteger n)
         {
 
-
+            _currentProgress = 0;
             using (StreamReader fsread = new StreamReader(inputFileName))
             {
                 using (FileStream fswrite = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
@@ -87,7 +85,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
                         uint readByte = Convert.ToUInt32(fsread.ReadLine());
 
 
-                        uint result = RSAByteEncryption((uint)readByte, d, n);
+                        uint result = (uint)RSAByteEncryption(readByte, d, n);
 
                         fswrite.WriteByte(BitConverter.GetBytes(result)[0]);
 
@@ -112,7 +110,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         }
 
-        private uint RSAByteEncryption(uint data, long d, long n)
+        private BigInteger RSAByteEncryption(uint data, BigInteger d, BigInteger n)
         {
             string result = "";
 
@@ -129,44 +127,167 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
             {
                 throw new Exception("Введите числа больше");
             }
-            return (uint)bi;
+            return bi;
 
         }
 
-
-        private bool IsTheNumberSimple(long n)
+        public bool MillerRabinTest(BigInteger n, int k)
         {
-            if (n < 2)
-                return false;
-
-            if (n == 2)
+            // если n == 2 или n == 3 - эти числа простые, возвращаем true
+            if (n == 2 || n == 3)
                 return true;
 
-            for (long i = 2; i < n; i++)
-                if (n % i == 0)
-                    return false;
+            // если n < 2 или n четное - возвращаем false
+            if (n < 2 || n % 2 == 0)
+                return false;
 
+            // представим n − 1 в виде (2^s)·t, где t нечётно, это можно сделать последовательным делением n - 1 на 2
+            BigInteger t = n - 1;
+
+            int s = 0;
+
+            while (t % 2 == 0)
+            {
+                t /= 2;
+                s += 1;
+            }
+
+            // повторить k раз
+            for (int i = 0; i < k; i++)
+            {
+                // выберем случайное целое число a в отрезке [2, n − 2]
+                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+
+                byte[] _a = new byte[n.ToByteArray().LongLength];
+
+                BigInteger a;
+
+                do
+                {
+                    rng.GetBytes(_a);
+                    a = new BigInteger(_a);
+                }
+                while (a < 2 || a >= n - 2);
+
+                // x ← a^t mod n, вычислим с помощью возведения в степень по модулю
+                BigInteger x = BigInteger.ModPow(a, t, n);
+
+                // если x == 1 или x == n − 1, то перейти на следующую итерацию цикла
+                if (x == 1 || x == n - 1)
+                    continue;
+
+                // повторить s − 1 раз
+                for (int r = 1; r < s; r++)
+                {
+                    // x ← x^2 mod n
+                    x = BigInteger.ModPow(x, 2, n);
+
+                    // если x == 1, то вернуть "составное"
+                    if (x == 1)
+                        return false;
+
+                    // если x == n − 1, то перейти на следующую итерацию внешнего цикла
+                    if (x == n - 1)
+                        break;
+                }
+
+                if (x != n - 1)
+                    return false;
+            }
+
+            // вернуть "вероятно простое"
             return true;
         }
 
-        private long Calculate_d(long m)
+        private bool IsTheNumberSimple(BigInteger n)
         {
-            long d = m - 1;
-
-            for (long i = 2; i <= m; i++)
-                if ((m % i == 0) && (d % i == 0))
+          
+            for (int a = 2; a < n && a < 11; a++)
+            {
+                // Запускаем тест
+                bool b = MillerRabinTest(n, a);
+                if (!b)
                 {
-                    d--;
-                    i = 1;
+                    return false;
                 }
+            }
+            return true;
 
-            return d;
+
         }
 
 
-        private long Calculate_e(long d, long m)
+        private BigInteger Calculate_d(BigInteger m)
         {
-            long e = 10;
+            BigInteger d = m - 1;
+
+            while (true)
+            {
+                bool Nod = NOD(m, d) > 1;
+                if (Nod)
+                {
+                    d--;
+                }
+                else
+                {
+                    break;
+                }
+
+            }
+
+
+            return d;
+        }
+        private static BigInteger NOD(BigInteger a, BigInteger b)
+        {
+            BigInteger nod = 1;
+            BigInteger tmp;
+            if (a == 0)
+                return b;
+            if (b == 0)
+                return a;
+            if (a == b)
+                return a;
+            if (a == 1 || b == 1)
+                return 1;
+            while (a != 0 && b != 0)
+            {
+                if (((a & 1) | (b & 1)) == 0)
+                {
+                    nod <<= 1;
+                    a >>= 1;
+                    b >>= 1;
+                    continue;
+                }
+                if (((a & 1) == 0) && (b & 1) > 0)
+                {
+                    a >>= 1;
+                    continue;
+                }
+                if ((a & 1) > 0 && ((b & 1) == 0))
+                {
+                    b >>= 1;
+                    continue;
+                }
+                if (a > b)
+                {
+                    tmp = a;
+                    a = b;
+                    b = tmp;
+                }
+                tmp = a;
+                a = (b - a) >> 1;
+                b = tmp;
+            }
+            if (a == 0)
+                return nod * b;
+            else
+                return nod * a;
+        }
+
+        private BigInteger Calculate_e(BigInteger d, BigInteger m)
+        {
+            BigInteger e = 10;
 
             while (true)
             {
