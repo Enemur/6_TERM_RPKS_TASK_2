@@ -49,11 +49,8 @@ namespace Lab2RPKS.ApplicationViewModel
             _rijndaelEncryption = new Rijndael(ref _currentProgress, worker, OnPropertyChanged);
             _alGamalEncryption = new AlGamal(ref _currentProgress, worker, OnPropertyChanged);
             _rabinEncryption = new Rabin(ref _currentProgress, worker, OnPropertyChanged);
-
-
-
         }
-        
+
         private ICommand _radioCommand;
         public ICommand RadioCommand
         {
@@ -143,42 +140,84 @@ namespace Lab2RPKS.ApplicationViewModel
                 switch (_selectedAction)
                 {
                     case SelectedAction.IsRSA:
-                        string key = InputBox.ShowInputBox("Введите 2 простых числа для шифровки через пробел");
-                        if (string.IsNullOrEmpty(key))
                         {
-                            MessageBox.Show("числа не заданы");
-                            return;
-                        }
-
-                        var numbers = key.Split(' ');
-                        if (_modeEncryption == ModeEncryption.Encrypt)
-                        {
-                            string answer = _rsaEncryption.Encode(_inputFileName, _outputFileName, BigInteger.Parse(numbers[0]), BigInteger.Parse(numbers[1]));
-                            if (!string.IsNullOrEmpty(answer))
+                            string key = InputBox.ShowInputBox("Введите 2 простых числа для шифровки через пробел");
+                            if (string.IsNullOrEmpty(key))
                             {
-                                MessageBox.Show($"Числа для расшифровки: {answer}");
+                                MessageBox.Show("числа не заданы");
+                                return;
+                            }
 
+                            var numbers = key.Split(' ');
+                            if (_modeEncryption == ModeEncryption.Encrypt)
+                            {
+                                string answer = _rsaEncryption.Encode(_inputFileName, _outputFileName, Convert.ToInt64(numbers[0]), Convert.ToInt64(numbers[1]));
+                                if (!string.IsNullOrEmpty(answer))
+                                {
+                                    MessageBox.Show($"Числа для расшифровки: {answer}");
+
+                                }
+                            }
+                            else
+                            {
+                                _rsaEncryption.Decipher(_inputFileName, _outputFileName, Convert.ToInt64(numbers[0]), Convert.ToInt64(numbers[1]));
                             }
                         }
-                        else
-                        {
-                            _rsaEncryption.Decipher(_inputFileName, _outputFileName, BigInteger.Parse(numbers[0]), BigInteger.Parse(numbers[1]));
-                        }
-
-
                         break;
-                        /*    case SelectedAction.IsAlGamal:
-                                _encryptionAlgorithm[(int) SelectedAction.IsAlGamal]
-                                    .Start(_inputFileName, _outputFileName, _modeEncryption);
-                                break;
-                            case SelectedAction.isRabin:
-                                _encryptionAlgorithm[(int) SelectedAction.isRabin]
-                                    .Start(_inputFileName, _outputFileName, _modeEncryption);
-                                break;
-                            case SelectedAction.IsRijndael:
-                                _encryptionAlgorithm[(int) SelectedAction.IsRijndael]
-                                    .Start(_inputFileName, _outputFileName, _modeEncryption);
-                                break;*/
+                    case SelectedAction.IsAlGamal:
+                        {
+                            string key = InputBox.ShowInputBox("Введите p, q, g, x через пробел");
+                            if (string.IsNullOrEmpty(key))
+                            {
+                                MessageBox.Show("Числа не заданы");
+                                return;
+                            }
+
+                            var numbers = key.Split(' ');
+
+                            if (numbers.Length != 4)
+                                throw new Exception("Incorrect input");
+
+                            var p = BigInteger.Parse(numbers[0]);
+                            var q = BigInteger.Parse(numbers[1]);
+                            var g = BigInteger.Parse(numbers[2]);
+                            var x = BigInteger.Parse(numbers[3]);
+
+                            if (_modeEncryption == ModeEncryption.Encrypt)
+                                _alGamalEncryption.Encrypt(_inputFileName, _outputFileName, p, q, g, x);
+                            else
+                                _alGamalEncryption.Decrypt(_inputFileName, _outputFileName, p, q, g, x);
+                        }
+                        break;
+                    case SelectedAction.isRabin:
+                        {
+                            string key = InputBox.ShowInputBox("Введите p, q, b через пробел");
+                            if (string.IsNullOrEmpty(key))
+                            {
+                                MessageBox.Show("Числа не заданы");
+                                return;
+                            }
+
+
+                            var numbers = key.Split(' ');
+
+                            if (numbers.Length != 3)
+                                throw new Exception("Incorrect input");
+
+                            var p = BigInteger.Parse(numbers[0]);
+                            var q = BigInteger.Parse(numbers[1]);
+                            var b = BigInteger.Parse(numbers[2]);
+
+                            if (_modeEncryption == ModeEncryption.Encrypt)
+                                _rabinEncryption.Encrypt(_inputFileName, _outputFileName, p, q, b);
+                            else
+                                _rabinEncryption.Decrypt(_inputFileName, _outputFileName, p, q, b);
+                        }
+                        break;
+                        //case SelectedAction.IsRijndael:
+                        //    _encryptionAlgorithm[(int) SelectedAction.IsRijndael]
+                        //        .Start(_inputFileName, _outputFileName, _modeEncryption);
+                        //    break;
                 }
 
 
@@ -198,11 +237,6 @@ namespace Lab2RPKS.ApplicationViewModel
             OnPropertyChanged($"CurrentProgress");
             IsRunning = true;
             OnPropertyChanged($"IsRunning");
-
-
-
-
-
         }
 
 
@@ -345,9 +379,5 @@ namespace Lab2RPKS.ApplicationViewModel
 
             }
         }
-
-
-
-
     }
 }
