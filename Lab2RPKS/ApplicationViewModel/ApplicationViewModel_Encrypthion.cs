@@ -12,7 +12,7 @@ using Microsoft.Win32;
 
 namespace Lab2RPKS.ApplicationViewModel
 {
-    public class ApplicationViewModel_Encrypthion : BaseAplicationViewModel
+    public class ApplicationViewModel_Encrypthion : ApplicationViewModel_task3 
     {
         private static bool _isRunning;
 
