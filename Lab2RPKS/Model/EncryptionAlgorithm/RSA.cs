@@ -17,6 +17,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         public string Encode(string inputFileName, string outputFileName, BigInteger p, BigInteger q)//возвращает секретные ключ в виде 2 чисел
         {
+            _currentProgress = 0;
             if (!IsTheNumberSimple(p) || !IsTheNumberSimple(q))
             {
                 throw new Exception("p или q - не простые числа!");
@@ -66,7 +67,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
         public void Decipher(string inputFileName, string outputFileName, BigInteger d, BigInteger n)
         {
 
-
+            _currentProgress = 0;
             using (StreamReader fsread = new StreamReader(inputFileName))
             {
                 using (FileStream fswrite = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))

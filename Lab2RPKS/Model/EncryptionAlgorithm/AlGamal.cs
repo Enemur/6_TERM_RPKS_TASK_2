@@ -64,6 +64,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         public void Encrypt(string inputFilePath, string outpuFilePath, BigInteger p, BigInteger q, BigInteger g, BigInteger x)
         {
+            _currentProgress = 0;
             CheckInput(p, g, q);
 
             var h = BigInteger.ModPow(g, x, p);

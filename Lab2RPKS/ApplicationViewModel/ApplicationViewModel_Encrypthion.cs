@@ -128,8 +128,10 @@ namespace Lab2RPKS.ApplicationViewModel
                 return;
             }
 
-
-            CurrentProgress = 0;
+            worker.ReportProgress(_currentProgress);
+            Thread.Sleep(1);
+            CurrentProgress =0;
+          
             OnPropertyChanged($"CurrentProgress");
             Thread.Sleep(1);
 
@@ -144,8 +146,7 @@ namespace Lab2RPKS.ApplicationViewModel
                             string key = InputBox.ShowInputBox("Введите 2 простых числа для шифровки через пробел");
                             if (string.IsNullOrEmpty(key))
                             {
-                                MessageBox.Show("числа не заданы");
-                                return;
+                                throw new Exception("Числа не заданы");
                             }
 
                             var numbers = key.Split(' ');
@@ -169,8 +170,8 @@ namespace Lab2RPKS.ApplicationViewModel
                             string key = InputBox.ShowInputBox("Введите p, q, g, x через пробел");
                             if (string.IsNullOrEmpty(key))
                             {
-                                MessageBox.Show("Числа не заданы");
-                                return;
+                                throw new Exception("Числа не заданы");
+                              
                             }
 
                             var numbers = key.Split(' ');
@@ -194,8 +195,7 @@ namespace Lab2RPKS.ApplicationViewModel
                             string key = InputBox.ShowInputBox("Введите p, q, b через пробел");
                             if (string.IsNullOrEmpty(key))
                             {
-                                MessageBox.Show("Числа не заданы");
-                                return;
+                                throw new Exception("Числа не заданы");
                             }
 
 

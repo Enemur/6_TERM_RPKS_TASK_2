@@ -91,6 +91,8 @@
     <Compile Include="Model\EncryptionTasks\Task3.cs" />
     <Compile Include="Model\GF\GF.cs" />
     <Compile Include="Model\GF\Gf256.cs" />
+    <Compile Include="Model\Operations.cs" />
+    <Compile Include="Model\Pair.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
