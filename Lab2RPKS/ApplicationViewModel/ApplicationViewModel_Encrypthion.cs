@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Numerics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -152,7 +153,7 @@ namespace Lab2RPKS.ApplicationViewModel
                         var numbers = key.Split(' ');
                         if (_modeEncryption == ModeEncryption.Encrypt)
                         {
-                            string answer = _rsaEncryption.Encode(_inputFileName, _outputFileName, Convert.ToInt64(numbers[0]), Convert.ToInt64(numbers[1]));
+                            string answer = _rsaEncryption.Encode(_inputFileName, _outputFileName, BigInteger.Parse(numbers[0]), BigInteger.Parse(numbers[1]));
                             if (!string.IsNullOrEmpty(answer))
                             {
                                 MessageBox.Show($"Числа для расшифровки: {answer}");
@@ -161,7 +162,7 @@ namespace Lab2RPKS.ApplicationViewModel
                         }
                         else
                         {
-                            _rsaEncryption.Decipher(_inputFileName, _outputFileName, Convert.ToInt64(numbers[0]), Convert.ToInt64(numbers[1]));
+                            _rsaEncryption.Decipher(_inputFileName, _outputFileName, BigInteger.Parse(numbers[0]), BigInteger.Parse(numbers[1]));
                         }
 
 
