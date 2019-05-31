@@ -92,6 +92,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         public void Encrypt(string inputFilePath, string outputFilePath, BigInteger p, BigInteger q, BigInteger b)
         {
+            _currentProgress = 0;
             CheckInput(p, q, b);
 
             var n = p * q;
@@ -160,6 +161,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         public void Decrypt(string inputFilePath, string outputFilePath, BigInteger p, BigInteger q, BigInteger b)
         {
+            _currentProgress = 0;
             CheckInput(p, q, b);
 
             var n = p * q;

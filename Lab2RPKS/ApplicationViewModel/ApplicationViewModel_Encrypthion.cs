@@ -12,7 +12,7 @@ using Microsoft.Win32;
 
 namespace Lab2RPKS.ApplicationViewModel
 {
-    public class ApplicationViewModel_Encrypthion : BaseAplicationViewModel
+    public class ApplicationViewModel_Encrypthion : ApplicationViewModel_task3 
     {
         private static bool _isRunning;
 
@@ -128,8 +128,10 @@ namespace Lab2RPKS.ApplicationViewModel
                 return;
             }
 
-
-            CurrentProgress = 0;
+            worker.ReportProgress(_currentProgress);
+            Thread.Sleep(1);
+            CurrentProgress =0;
+          
             OnPropertyChanged($"CurrentProgress");
             Thread.Sleep(1);
 
@@ -144,8 +146,7 @@ namespace Lab2RPKS.ApplicationViewModel
                             string key = InputBox.ShowInputBox("Введите 2 простых числа для шифровки через пробел");
                             if (string.IsNullOrEmpty(key))
                             {
-                                MessageBox.Show("числа не заданы");
-                                return;
+                                throw new Exception("Числа не заданы");
                             }
 
                             var numbers = key.Split(' ');
