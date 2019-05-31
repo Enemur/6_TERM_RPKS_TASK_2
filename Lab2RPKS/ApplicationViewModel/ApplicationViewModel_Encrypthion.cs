@@ -237,11 +237,6 @@ namespace Lab2RPKS.ApplicationViewModel
             OnPropertyChanged($"CurrentProgress");
             IsRunning = true;
             OnPropertyChanged($"IsRunning");
-
-
-
-
-
         }
 
 
@@ -384,9 +379,5 @@ namespace Lab2RPKS.ApplicationViewModel
 
             }
         }
-
-
-
-
     }
 }

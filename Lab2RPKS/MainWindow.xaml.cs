@@ -13,7 +13,7 @@ namespace Lab2RPKS
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ApplicationViewModel_Encrypthion();
+            DataContext = new ApplicationViewModelGf256();
         }
     }
 }

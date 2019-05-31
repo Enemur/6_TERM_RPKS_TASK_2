@@ -1,6 +1,9 @@
 using System;
 using System.IO;
+using System.Numerics;
+using Lab2RPKS.Model;
 using Lab2RPKS.Model.EncryptionAlgorithm;
+using Lab2RPKS.Model.GF;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Lab2RPKS.Test
@@ -24,10 +27,10 @@ namespace Lab2RPKS.Test
             bool result = true;
             RSA _encryptionAlgorithm = new RSA(ref k, null, null);
 
-            string answer = _encryptionAlgorithm.Encode(inFile, out1File,  47, 97);
+            string answer = _encryptionAlgorithm.Encode(inFile, out1File, new BigInteger(17), new BigInteger(23));
             var ans = answer.Split(' ');
 
-            _encryptionAlgorithm.Decipher(out1File, out2File,  (long)Convert.ToInt64(ans[0]), (long)Convert.ToInt64(ans[1]));
+            _encryptionAlgorithm.Decipher(out1File, out2File, BigInteger.Parse(ans[0]), BigInteger.Parse(ans[1]));
 
             try
             {
@@ -123,6 +126,32 @@ namespace Lab2RPKS.Test
             Assert.IsTrue(false);
         }
 
-       
+        [TestMethod]
+        public void GFTestMult()
+        {
+            Gf gf1=new Gf(3);
+            Gf gf2=new Gf(3);
+            gf1.Polynom = "7";
+            gf2.Polynom = "3";
+
+            string TrueResult = "2";
+            string result = (gf1*gf2).Polynom;
+            Assert.AreEqual(TrueResult,result);
+           
+        }
+
+        [TestMethod]
+        public void GFTestDiv()
+        {
+            Gf gf1 = new Gf(3);
+            Gf gf2 = new Gf(3);
+            gf1.Polynom = "2";
+            gf2.Polynom = "7";
+
+            string TrueResult = "3";
+            string result = (gf1 / gf2).Polynom;
+            Assert.AreEqual(TrueResult, result);
+
+        }
     }
 }
