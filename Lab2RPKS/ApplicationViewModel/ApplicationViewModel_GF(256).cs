@@ -7,7 +7,7 @@ using Lab2RPKS.Model.GF;
 
 namespace Lab2RPKS.ApplicationViewModel
 {
-    class ApplicationViewModelGf256:ApplicationViewModel_Encrypthion
+    public class ApplicationViewModelGf256:ApplicationViewModel_Encrypthion
     {
         private Gf256 _polynom1;
         private Gf256 _polynom2 ;

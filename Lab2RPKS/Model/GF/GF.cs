@@ -23,6 +23,17 @@ namespace Lab2RPKS.Model.GF
             CreatePrimitivePolynom();
         }
 
+        public int Size
+        {
+            get { return _size; }
+            set
+            {
+                _polynomMax = (BigInteger)1 << (value - 1);
+                _size = value;
+                CreatePrimitivePolynom();
+            }
+           
+        }
         public string Polynom
         {
             get { return _polynom.ToString(); }
