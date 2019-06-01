@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 
 // https://referencesource.microsoft.com/#mscorlib/system/security/cryptography/rijndaelmanagedtransform.cs
 
@@ -378,8 +379,36 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         #region Public Methods
 
+        public void SetSettings(BlockSize blockSize, KeySize keySize, string key)
+        {
+            if (key.Length % 2 != 0)
+            {
+                throw new Exception("Bad key length");
+            }
+
+            var bytes = new byte[key.Length / 2];
+
+            var index = 0;
+            while (key.Length > 0)
+            {
+                var tmp = key.Substring(0, 2);
+                key = key.Substring(2, key.Length - 2);
+
+                bytes[index] = (byte)Convert.ToInt32(tmp, 16);
+                index++;
+            }
+
+            SetSettings(blockSize, keySize, bytes);
+        }
+
         public void SetSettings(BlockSize blockSize, KeySize keySize, byte[] key)
         {
+            var keyLengthInBytes = RijndaelSizesConverter.KeySizeToInt(keySize) / 8;
+            if (key.Length != keyLengthInBytes)
+            {
+                throw new Exception("Bad key length");
+            }
+
             _blockSize = blockSize;
             _keySize = keySize;
             _key = key;
@@ -411,10 +440,13 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
         void ProcessFileANSIX923(FileStream inFile, FileStream outFile, Func<byte[], byte[]> handler, bool isEncrypting)
         {
+            _currentProgress = 0;
             var amountBytesInBlock = RijndaelSizesConverter.BlockSizeToInt(_blockSize) / 8;
 
             var fileSize = inFile.Length;
             var blocksAmount = fileSize / amountBytesInBlock;
+
+            var oneTick = blocksAmount / 100 + 1;
 
             // при дешифровке блоков должно быть минимум 2 и размер должен быть кратен блоку
             var incorrectFile = (fileSize % amountBytesInBlock != 0) && !isEncrypting;
@@ -438,10 +470,16 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
                 }
 
                 readedBlocksAmount++;
-                const int progressInterval = 100;
-                if (readedBlocksAmount % progressInterval == 0)
+
+                if (readedBlocksAmount % oneTick == 0)
                 {
-                    // progressWatcher((unsigned) ((readedBlocksAmount * 100.0) / blocksAmount));
+                    if (_worker != null)
+                    {
+                        _worker.ReportProgress(_currentProgress);
+                        Thread.Sleep(1);
+                        _currentProgress++;
+                        _onPropertyChanged("CurrentProgress");
+                    }
                 }
 
                 outData = handler(inData);
@@ -451,6 +489,10 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
                 {
                     // последний блок при расшифровке прочитан
                     var amount = outData[amountBytesInBlock - 1];
+                    if (amount < 0 || amount > amountBytesInBlock)
+                    {
+                        throw new Exception("incorrect file format");
+                    }
                     outFile.Write(outData, 0, amount);
                 }
                 else
