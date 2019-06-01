@@ -143,8 +143,7 @@ namespace Lab2RPKS.Model.EncryptionAlgorithm
 
                         var pair = new Pair<BigInteger, BigInteger>(firstValue, secondValue);
                         var data = DecryptData(pair, x, p);
-                        var bytes = data.ToByteArray();
-                        resultBytes.AddRange(bytes);
+                        resultBytes.Add((byte)data);
                     }
 
                     fileWriter.Write(resultBytes.ToArray(), 0, resultBytes.Count);

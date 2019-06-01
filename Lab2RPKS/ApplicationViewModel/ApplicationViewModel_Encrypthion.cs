@@ -143,7 +143,7 @@ namespace Lab2RPKS.ApplicationViewModel
                 {
                     case SelectedAction.IsRSA:
                         {
-                            string key = InputBox.ShowInputBox("Введите 2 простых числа для шифровки через пробел");
+                            string key = InputBox.ShowInputBox("Введите 2 простых числа для шифровки через пробел","17 19", false);
                             if (string.IsNullOrEmpty(key))
                             {
                                 throw new Exception("Числа не заданы");
@@ -167,7 +167,7 @@ namespace Lab2RPKS.ApplicationViewModel
                         break;
                     case SelectedAction.IsAlGamal:
                         {
-                            string key = InputBox.ShowInputBox("Введите p, q, g, x через пробел");
+                            string key = InputBox.ShowInputBox("Введите p, q, g, x через пробел","809 101 368 14", false);
                             if (string.IsNullOrEmpty(key))
                                 throw new Exception("Numbers not given");
 
@@ -189,7 +189,7 @@ namespace Lab2RPKS.ApplicationViewModel
                         break;
                     case SelectedAction.isRabin:
                         {
-                            string key = InputBox.ShowInputBox("Введите p, q, b через пробел");
+                            string key = InputBox.ShowInputBox("Введите p, q, b через пробел","7 19 3", false);
                             if (string.IsNullOrEmpty(key))
                                 throw new Exception("Numbers not given");
 
