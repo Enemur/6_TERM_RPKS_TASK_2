@@ -209,10 +209,65 @@ namespace Lab2RPKS.ApplicationViewModel
                                 _rabinEncryption.Decrypt(_inputFileName, _outputFileName, p, q, b);
                         }
                         break;
-                        //case SelectedAction.IsRijndael:
-                        //    _encryptionAlgorithm[(int) SelectedAction.IsRijndael]
-                        //        .Start(_inputFileName, _outputFileName, _modeEncryption);
-                        //    break;
+                    case SelectedAction.IsRijndael:
+                        string input = InputBox.ShowInputBox(
+                            "Введите block size (128 или 192 или 256), key size (128 или 192 или 256), key (в 16 сс) через пробел",
+                            "128 128 01020304050607080910111213141516", false);
+                        if (string.IsNullOrEmpty(input))
+                        {
+                            throw new Exception("Data Not given");
+                        }
+
+                        var data = input.Split(' ');
+
+                        // TODO: set settings
+                        var blockSize = BlockSize.Size128;
+
+                        switch (data[0])
+                        {
+                            case "128":
+                                blockSize = BlockSize.Size128;
+                                break;
+                            case "192":
+                                blockSize = BlockSize.Size192;
+                                break;
+                            case "256":
+                                blockSize = BlockSize.Size256;
+                                break;
+                            default:
+                                throw new Exception("Bad block size");
+                        }
+
+                        var keySize = KeySize.Size128;
+
+                        switch (data[1])
+                        {
+                            case "128":
+                                keySize = KeySize.Size128;
+                                break;
+                            case "192":
+                                keySize = KeySize.Size192;
+                                break;
+                            case "256":
+                                keySize = KeySize.Size256;
+                                break;
+                            default:
+                                throw new Exception("Bad key size");
+                        }
+
+                        var keyRaw = data[2];
+
+                        _rijndaelEncryption.SetSettings(blockSize, keySize, keyRaw);
+
+                        if (_modeEncryption == ModeEncryption.Encrypt)
+                        {
+                            _rijndaelEncryption.EncryptFile(_inputFileName, _outputFileName);
+                        }
+                        else
+                        {
+                            _rijndaelEncryption.DecryptFile(_inputFileName, _outputFileName);
+                        }
+                        break;
                 }
 
 
